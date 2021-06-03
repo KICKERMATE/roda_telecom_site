@@ -1,0 +1,22 @@
+<div class="grid-x large-offset-2">
+  <span class="label warning">
+    <h6>
+      Вы действительно хотите удалить абонента с номером <%= @sub.phone_number %>? Это действие <b>необратимо</b>!
+    </h6>
+  </span>
+</div>
+<% form({ method: :post }, { obj: @parameters }) do |f| %>
+    <div class="grid-x grid-padding-y large-offset-2">
+      <div class="cell small-6">
+        <a href="/" class="button primary">Нет, вернуться к списку абонентов</a>
+      </div>
+      <div class="cell small-6">
+        <div class="cell small-3">
+        <%= f.input(:confirmation ,type: :checkbox, label: 'Подтверждаю') %>
+        </div>
+        <div class="cell small-3">
+          <%= f.button(value: "Удалить", class: 'button alert') %>
+        </div>
+      </div>
+    </div>
+<% end %>

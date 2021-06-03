@@ -1,0 +1,29 @@
+<div class="grid-x grid-padding-y">
+  <div class="expanded button-group">
+    <a href="/" class="button">К списку абонентов</a>
+  </div>
+  <div class="large-12">
+    <h4>Статистика компании "Ы-Телеком"</h4>
+      <div class="large-12 cell">
+          <h6>Всего <%= @stats[:subs_amount].ceil(2) %> абонентов</h6>
+          <h6>Средняя оплата <%= @stats[:average_payment].ceil(2) %> рублей</h6>
+    </div>
+    <div class="grid-container">
+      <div class="grid-x grid-margin-x small-up-2 medium-up-3">
+      <% @stats[:plans_stats].each_pair do |plan_name, info| %>
+        <div class="card cell large-4">
+          <div class="card-divider">
+            <%= plan_name %>
+          </div>
+          <div class="card-section">
+            <p>Пользуются <%= info[:subs_on_plan] %> абонентов</p>
+            <p>В среднем используют: <%= info[:average_minutes].ceil(2) %> минут</p>
+            <p>Среднее превышение: <%= info[:average_above_plan_minutes].ceil(2) %> минут</p>
+            <a><a href="/plans/<%= plan_name %>" class="hollow button">Подробнее о плане</a></a>
+          </div>
+        </div>
+      <% end %>
+    </div>
+   </div>
+  </div>
+</div>

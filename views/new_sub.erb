@@ -1,0 +1,22 @@
+<div class="expanded button-group">
+  <a href="/" class="button">Вернуться на главную</a>
+</div>
+<% form({ method: :post }, { obj: @parameters }) do |f| %>
+  <% unless @parameters[:errors].nil? %>
+    <span class="label warning"><h3>Данные введены неверно!</h3></span>
+  <% end %>
+  <div class="grid-x grid-margin-x">
+    <div class="large-12 cell">
+      <%= f.input(:first_name, type: :text, label: 'Имя', placeholder: 'Иван') %>
+    </div>
+    <div class="large-12 cell">
+      <%= f.input(:last_name, type: :text, label: 'Фамилия', placeholder: 'Иванов') %>
+    </div>
+    <div class="large-12 cell">
+      <%= f.input(:calling_plan, type: :select, label: 'Тарифный план', options: @all_plans, add_blank: true)%>
+    </div>
+    <div class="large-12 cell">
+      <%= f.button(value: "Добавить абонента", class: 'button') %>
+    </div>
+  </div>
+<% end %>

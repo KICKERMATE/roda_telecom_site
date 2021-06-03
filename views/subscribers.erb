@@ -1,0 +1,76 @@
+<div class="grid-x grid-padding-x">
+  <div class="expanded button-group">
+    <% if opts[:to_main] %>
+      <a href="/" class="button">К списку абонентов</a>
+    <% end %>
+    <% unless @no_adding %>
+      <a href="/subscribers/new" class="button">Добавить абонента</a>
+    <% end %>
+    <a href="/subscribers/stats" class="button">Статистика</a>
+  </div>
+  <div class="large-12 cell">
+    <h3>Абоненты "Ы-Телеком"</h3>
+  </div>
+
+  <div class="large-12 cell">
+    <% form({ method: :get }, { obj: @parameters }) do |f| %>
+      <div class="grid-x grid-padding-x">
+        <% if @parameters.failure? %>
+          <div class="large-12 cell callout warning">
+            <p>
+              Параметры фильтра введены неверно, данные не были отфильтрованы
+            </p>
+          </div>
+        <% end %>
+        <div class="large-6 cell">
+          <%= f.input(:phone_number, type: :number, placeholder: '123456', label: 'Номер телефона') %>
+        </div>
+        <div class="large-6 cell">
+          <%= f.input(:last_name, type: :text, placeholder: 'Иванов', label: 'Фамилия') %>
+        </div>
+        <div class="large-12 cell">
+          <%= f.button(value: 'Найти', class: 'hollow button') %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="large-12 cell">
+    <% if @subs.empty? %>
+      <div class="large-12 cell large-offset-3">
+          <span class="label warning">
+            <h5>Абонентов с данными критериями не существует!</h5>
+          </span>
+      </div>
+    <%  else  %>
+    <table>
+      <thead>
+      <tr>
+        <th>Фамилия</th>
+        <th>Имя</th>
+        <th>Номер телефона</th>
+        <th>Тарифный план</th>
+        <th>Минут за последний месяц</th>
+        <th></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <%  @subs.each do |sub|  %>
+      <tr>
+        <td><%= sub.last_name  %></td>
+        <td><%= sub.first_name  %></td>
+        <td><%= sub.phone_number %></td>
+        <td><%= sub.calling_plan.name  %></td>
+        <td><%= sub.minutes_in_past_month %></td>
+        <td><a href="subscribers/<%= sub.phone_number  %>" class="button">
+          Подробнее<% if (opts[:plans].best_plan_for_sub(sub)) != sub.calling_plan %> <span class="badge warning">!</span><% end %>
+        </a></td>
+        <td><a href="subscribers/<%= sub.phone_number  %>/delete" class="alert button">Удалить</a></td>
+      </tr>
+      <%  end  %>
+      </tbody>
+    </table>
+    <% end %>
+  </div>
+</div>

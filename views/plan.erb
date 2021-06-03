@@ -1,0 +1,48 @@
+<div class="grid-x">
+  <div class="expanded button-group">
+    <a href="/subscribers/stats" class="button">К статистике</a>
+    <a href="/" class="button">К списку абонентов</a>
+  </div>
+  <div class="large-12">
+    <div class="grid-y">
+      <h5>Информация о плане</h5>
+      <h6>Название: <%= @this_plan.name %></h6>
+      <h6>Доступно минут по плану: <%= @this_plan.minutes_limit == 'inf' ? 'Не ограничено' : @this_plan.minutes_limit %></h6>
+      <h6>Месячная плата: <%= @this_plan.monthly_payment %> рублей</h6>
+      <h6>Каждая минута сверх плана: <%= @this_plan.minute_above_plan_price %> рублей</h6>
+    </div>
+  </div>
+  <div class="large-12 cell">
+    <% if @subs.empty? %>
+      <div class="large-12 cell large-offset-3">
+          <span class="label primary">
+            <h5>Этот план пока не использует ни один абонент</h5>
+          </span>
+      </div>
+    <%  else  %>
+      <div class="large-12 cell">
+        <h4>Абоненты, использующие этот план:</h4>
+      </div>
+      <table>
+        <thead>
+        <tr>
+          <th>Фамилия</th>
+          <th>Имя</th>
+          <th>Номер телефона</th>
+          <th>Минут за последний месяц</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%  @subs.each do |sub|  %>
+          <tr>
+            <td><%= sub.last_name  %></td>
+            <td><%= sub.first_name  %></td>
+            <td><%= sub.phone_number %></td>
+            <td><%= sub.minutes_in_past_month %></td>
+          </tr>
+        <%  end  %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+</div>

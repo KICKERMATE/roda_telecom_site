@@ -1,0 +1,36 @@
+<div class="grid-x">
+  <div class="expanded button-group">
+    <a href="/" class="button">К списку абонентов</a>
+    <a href="/subscribers/new" class="button">Добавить абонента</a>
+  </div>
+  <div class="large-12">
+    <div class="grid-y">
+      <h5>Информация об абоненте</h5>
+        <h6>Имя: <%= @in_sub.first_name %></h6>
+        <h6>Фамилия: <%= @in_sub.last_name %></h6>
+        <h6>Номер телефона: <%= @in_sub.phone_number %></h6>
+        <h6>Воспользовался(-лась): <%= @in_sub.minutes_in_past_month %> минутами за прошлый месяц</h6>
+      <% temp_best_plan = opts[:plans].best_plan_for_sub(@in_sub) %>
+      <% if temp_best_plan == @in_sub.calling_plan %>
+        <h6>
+          Тарифный план: "<%= @in_sub.calling_plan.name %>" с оплатой в размере: <%= @in_sub.calling_plan.monthly_payment %> рублей в месяц
+        </h6>
+      <% else %>
+        <span class="label warning">
+          <h6>
+            Тарифный план: "<%= @in_sub.calling_plan.name %>" с оплатой в размере: <%= @in_sub.calling_plan.monthly_payment %> рублей
+            <% if  @in_sub.calling_plan.minutes_limit != 'inf' && @in_sub.minutes_in_past_month > @in_sub.calling_plan.minutes_limit %>
+               за план и <%= temp_price_above_limit = ((@in_sub.minutes_in_past_month - @in_sub.calling_plan.minutes_limit) * @in_sub.calling_plan.minute_above_plan_price).ceil(2) %> рублей за доп. минуты.
+              Итого: <%= (@in_sub.calling_plan.monthly_payment + temp_price_above_limit).ceil(2) %> рублей
+            <% end %>
+          </h6>
+        </span>
+        <span class="label success">
+          <h6><b>
+            Лучший план: "<%= temp_best_plan.name %>". Используя его, за прошлый месяц абонент бы заплатил: <%= temp_best_plan.price_for_mins(@in_sub.minutes_in_past_month).ceil(2) %> рублей
+          </b></h6>
+        </span>
+      <% end %>
+    </div>
+  </div>
+</div>
